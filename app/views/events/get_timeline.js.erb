@@ -1,0 +1,5 @@
+var container = $('#activities');
+container.empty().show();
+<% @activities.each do | activity | %>
+  container.append('<%= j(render "activity", payload: activity) %>');
+<% end %>

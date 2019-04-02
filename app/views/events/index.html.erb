@@ -1,0 +1,18 @@
+<div class="container my-5">
+
+  <h1>GitHub User Timeline</h1>
+  <p>View the most recent timeline of any Github user.</p>
+
+  <form action='/events/get_timeline' method='post' data-remote="true" id="gh-form" class="form-inline mb-4">
+    <div class="form-group form-group-lg">
+      <label for="username" class="mr-sm-3">GitHub Username</label>
+      <input type="text" class="form-control mr-sm-3" id="username" name='username' placeholder="GitHub username">
+    </div>
+    <button type='submit' class='btn btn-primary'>View Activity</button>
+  </form>
+
+  <hr/>
+  <div id="activities" class="pt-4 mb-4">
+
+  </div>
+</div>
