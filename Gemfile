@@ -36,6 +36,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.8'
   gem 'awesome_print'
+  gem 'webmock'
 end
 
 group :development do
@@ -57,3 +58,4 @@ gem 'autoprefixer-rails'
 gem 'bootstrap'
 gem 'httparty'
 gem 'jquery-rails'
+gem 'redcarpet'

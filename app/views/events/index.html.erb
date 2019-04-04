@@ -10,9 +10,30 @@
     </div>
     <button type='submit' class='btn btn-primary'>View Activity</button>
   </form>
-
-  <hr/>
-  <div id="activities" class="pt-4 mb-4">
-
+  <div id="wait">
+    <div class="wait-inner">
+      <%= image_tag 'Spinner-1s-200px.gif' %>
+      <p>Processing...</p>
+    </div>
+  </div>
+  <div id="results">
+    <div id="author-info"></div>
+    <div id="activities" class="list-group list-group-flush pt-4 mb-4"></div>
   </div>
 </div>
+
+<script>
+  $(document).on('turbolinks:load', function () {
+     $('form#gh-form')
+     .on('ajax:beforeSend', showSpinner)
+     .on('ajax:complete', hideSpinner);
+
+     function showSpinner() {
+       $('#wait').show();
+     }
+
+     function hideSpinner() {
+       $('#wait').hide();
+     }
+  });
+</script>

@@ -4,6 +4,46 @@
     }
 }
 
-#activities {
+#results {
     display: none;
+}
+
+#activities span.text-danger,
+#activities span.text-info {
+    font-size: 18px;
+}
+
+#author-info {
+    display: flex;
+
+    .thumbnail {
+        width: 200px;
+        height: 200px;
+    }
+
+    h5 {
+        align-self: center;
+    }
+
+}
+
+#wait {
+    display: none;
+    flex-basis: 50%;
+
+    .wait-inner {
+        display: flex;
+        align-items: center;
+    }
+
+    img {
+        width: 150px;
+        height: 150px;
+    }
+
+    p {
+        color: #76C0ED;
+        font-size: 34px;
+        font-weight: 300;
+    }
 }

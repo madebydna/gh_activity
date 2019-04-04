@@ -1,1 +1,10 @@
-<p><%= payload[:type] %></p>
+<div class="list-group-item flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1"><%= payload.type %></h5>
+      <small><%= time_ago_in_words(payload.created_at) %> ago</small>
+    </div>
+    <% if payload.details.present? %>
+      <p class="mb-1"><%= markdown(payload.details) %></p>
+    <% end %>
+    <small>Repository: <strong><%= payload.repo.name %></strong></small>
+</div>

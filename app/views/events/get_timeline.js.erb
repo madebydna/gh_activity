@@ -1,5 +1,20 @@
+var results = $('#results');
 var container = $('#activities');
-container.empty().show();
-<% @activities.each do | activity | %>
-  container.append('<%= j(render "activity", payload: activity) %>');
+var author_info = $('#author-info');
+results.show();
+container.empty();
+author_info.empty();
+<% if @error %>
+  var $span = $('<span>', { class: 'text-danger' });
+  $span.html('<strong>Sorry, an error has occurred</strong>. Error message returned: <%= @error %>');
+  container.append($span);
+<% elsif @activities.length > 0 %>
+  author_info.html('<%= j(render "author_info", author: @author) %>');
+  <% @activities.each do | activity | %>
+    container.append('<%= j(render "activity", payload: activity) %>');
+  <% end %>
+<% else %>
+  var $span = $('<span>', { class: 'text-info' });
+  $span.html('No recent activity for user <%= @username %>');
+  container.append($span);
 <% end %>

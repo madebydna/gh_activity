@@ -1,0 +1,35 @@
+---
+version: 2
+jobs:
+  build:
+    working_directory: ~/gh_events
+    docker:
+      - image: circleci/ruby:2.6.1-stretch
+        environment:
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
+    steps:
+      - checkout
+
+      # Which version of bundler?
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # Restore cached dependencies
+      - type: cache-restore
+        name: Restore bundle cache
+        key: gh-events-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
+
+      # Cache dependencies
+      - type: cache-save
+        name: Store bundle cache
+        key: gh-events-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Run the tests
+      - run: bundle exec rake
