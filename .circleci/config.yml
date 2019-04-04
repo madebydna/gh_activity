@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/gh_events
     docker:
-      - image: circleci/ruby:2.4.2-jessie
+      - image: circleci/ruby:2.4.2-jessie-node
         environment:
           BUNDLE_PATH: vendor/bundle
           RAILS_ENV: test
