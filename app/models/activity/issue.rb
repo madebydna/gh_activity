@@ -4,7 +4,7 @@ module Activity
         def details
             @details ||= begin
                 <<~HEREDOC
-                #{payload["action"].capitalize} [issue](#{issue_url}) #{issue_title}
+                #{payload["action"].capitalize} [issue](#{issue_url}) \"#{issue_title}\"
                 HEREDOC
             end
         end
