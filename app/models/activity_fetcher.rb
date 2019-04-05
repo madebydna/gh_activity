@@ -19,24 +19,60 @@ class ActivityFetcher
     end
 
     def run
+        return {
+            error: "Hourly rate limit of 60 requests exceeded. Please try again later."
+        } if rate_limit_exceeded
         begin
-            response = self.class.get("/#{username}/events", {
-                headers: {"User-Agent" => "Httparty"}
-            })
-            return_activities_or_error(response)
+            get_response
         rescue *HTTP_ERRORS => e
             { error: e.message }
         end
+    end
+
+    def get_response
+        response = self.class.get("/#{username}/events", options)
+        if response.code == 304 # Not Modified response
+            Rails.cache.fetch("#{username}/data") || []
+        else
+            update_rate_limit(response.headers)
+            save_etag(response.headers)
+            return_activities_or_error(response)
+        end
+    end
+
+    def options
+        headers = { "User-Agent" => "Httparty" }
+        if etag = Rails.cache.read("#{username}/etag")
+            headers.merge!("If-None-Match" => etag)
+        end
+        { headers: headers }
     end
 
     private
 
     def return_activities_or_error(response)
         if response.code < 400
+            Rails.cache.write("#{username}/data", response.parsed_response, expires_in: expires_in(response.headers))
             response.parsed_response
         else
             { error: response.parsed_response["message"] }
         end
+    end
+
+    def update_rate_limit(headers)
+        Rails.cache.write("requests_remaining", headers["x-ratelimit-remaining"].to_i, expires_in: expires_in(headers).seconds)
+    end
+
+    def expires_in(headers)
+        (headers["x-ratelimit-reset"].to_i - Time.current.utc.to_i).seconds
+    end
+
+    def save_etag(headers)
+        Rails.cache.write("#{username}/etag", headers["etag"]) if headers["etag"]
+    end
+
+    def rate_limit_exceeded
+        Rails.cache.read("requests_remaining") && Rails.cache.read("requests_remaining") <= 0
     end
 
 end
