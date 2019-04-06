@@ -13,6 +13,18 @@
     font-size: 18px;
 }
 
+#activities .details {
+    padding: 10px;
+    background: #F8F8F8;
+    font-size: 14px;
+    color: #444444;
+}
+
+#activities .details p:last-of-type {
+    margin-bottom: 0;
+}
+
+
 #author-info {
     display: flex;
 

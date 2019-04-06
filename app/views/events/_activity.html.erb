@@ -4,7 +4,7 @@
       <small><%= time_ago_in_words(payload.created_at) %> ago</small>
     </div>
     <% if payload.details.present? %>
-      <p class="mb-1"><%= markdown(payload.details) %></p>
+      <div class="details"><%= markdown(payload.details) %></div>
     <% end %>
     <small>Repository: <strong><%= payload.repo.name %></strong></small>
 </div>

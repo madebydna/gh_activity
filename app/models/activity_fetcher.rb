@@ -32,12 +32,22 @@ class ActivityFetcher
     def get_response
         response = self.class.get("/#{username}/events", options)
         if response.code == 304 # Not Modified response
-            Rails.cache.fetch("#{username}/data") || []
+            Rails.cache.fetch("#{username}/data") do
+                # Re-send request if user's data was pushed out of
+                # cache but ETag still exists
+                Rails.cache.delete("#{username}/etag")
+                response = self.class.get("/#{username}/events", options)
+                handle_response(response)
+            end
         else
-            update_rate_limit(response.headers)
-            save_etag(response.headers)
-            return_activities_or_error(response)
+            handle_response(response)
         end
+    end
+
+    def handle_response(response)
+        update_rate_limit(response.headers)
+        save_etag(response.headers)
+        return_activities_or_error(response)
     end
 
     def options

@@ -29,6 +29,8 @@
      .on('ajax:complete', hideSpinner);
 
      function showSpinner() {
+       $('#activities').empty();
+       $('#author-info').empty();
        $('#wait').show();
      }
 
